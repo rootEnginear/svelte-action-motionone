@@ -82,21 +82,3 @@ export const scrollAnimation: Action<HTMLElement, ScrollAnimationActionOptions> 
 		destroy
 	};
 };
-
-export const selfScroll = (node: HTMLElement, options: ScrollActionOptions) =>
-	scroll(node, {
-		...options,
-		options: {
-			...options.options,
-			target: node
-		}
-	});
-
-export const selfScrollAnimation = (node: HTMLElement, options: ScrollAnimationActionOptions) =>
-	scrollAnimation(node, {
-		...options,
-		options: {
-			...options.options,
-			target: node
-		}
-	});
