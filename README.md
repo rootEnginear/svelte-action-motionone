@@ -15,6 +15,9 @@ Unofficial [Svelte Action](https://svelte.dev/docs/svelte-action) for [Motion On
   - [Way 2: Extract the whole action with `createAction`](#way-2-extract-the-whole-action-with-createaction)
 - [Gotchas](#gotchas)
   - [`scroll`/`scrollAnimation` use window scroll](#scrollscrollanimation-use-window-scroll)
+- [More Examples](#more-examples)
+  - [Staggered Animation](#staggered-animation)
+  - [Parallax Image](#parallax-image)
 - [Design Principle](#design-principle)
 
 ## Documentation
@@ -225,6 +228,80 @@ Unlike `inView` which watch the current element intersection, `scroll` will use 
 **Reasoning:** Aligning with Motion One behavior — [Read the documentation of `scroll`](https://motion.dev/docs/scroll)
 
 > This used to be an action in `v0.1.0` but I was wrong about Motion's `scroll` behavior and the name could be confusing. Still, there might be actions for this in the future.
+
+## More Examples
+
+### Staggered Animation
+
+```svelte
+<script lang="ts">
+	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { stagger } from 'motion';
+
+	const listFadeOptions = {
+		animate: {
+			elements: '&>li',
+			keyframes: {
+				opacity: [0, 1]
+			},
+			options: {
+				duration: 1,
+				delay: stagger(0.1)
+			}
+		},
+		options: {
+			amount: 0.5
+		}
+	};
+</script>
+
+<ul use:inViewAnimation={listFadeOptions}>
+	<li class="opacity-0">001</li>
+	<li class="opacity-0">002</li>
+	<li class="opacity-0">003</li>
+	<li class="opacity-0">004</li>
+	<li class="opacity-0">005</li>
+	<li class="opacity-0">006</li>
+	<li class="opacity-0">007</li>
+	<li class="opacity-0">008</li>
+	<li class="opacity-0">009</li>
+	<li class="opacity-0">010</li>
+</ul>
+```
+
+> Read about [Stagger](https://motion.dev/docs/stagger)
+
+### Parallax Image
+
+Parallax image are basically shift-on-scroll image
+
+```svelte
+<script lang="ts">
+	import { scrollAnimation } from '@rootenginear/svelte-action-motion-one';
+
+	const parallaxOptions = {
+		animate: {
+			keyframes: {
+				transform: ['translateY(10%)', 'translateY(-10%)']
+			}
+		},
+		options: {
+			target: '&',
+			offset: ['0 1', '1 0']
+		}
+	};
+</script>
+
+<img
+	src="https://picsum.photos/300/200"
+	alt=""
+	width="300"
+	height="200"
+	loading="eager"
+	decoding="async"
+	use:scrollAnimation={parallaxOptions}
+/>
+```
 
 ## Design Principle
 

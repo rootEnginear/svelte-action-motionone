@@ -99,4 +99,23 @@
 </h1>
 <h1 use:viewBlurFade>Hello Welcome</h1>
 <h1 use:viewBlurFade>Hello Welcome</h1>
+<img
+	src="https://picsum.photos/300/200"
+	alt=""
+	width="300"
+	height="200"
+	loading="eager"
+	decoding="async"
+	use:scrollAnimation={{
+		animate: {
+			keyframes: {
+				transform: ['translateY(10%)', 'translateY(-10%)']
+			}
+		},
+		options: {
+			target: '&',
+			offset: ['0 1', '1 0']
+		}
+	}}
+/>
 <div style="height:100svh">Scroll down!</div>
