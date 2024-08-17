@@ -11,7 +11,8 @@ import { animate as motionAnimate, scroll as motionScroll } from 'motion';
 import type { Action } from 'svelte/action';
 
 export type ExtendedScrollOptions = {
-	options?: ScrollOptions & {
+	options?: Omit<ScrollOptions, 'container' | 'target'> & {
+		container?: string | ScrollOptions['container'];
 		target?: string | ScrollOptions['target'];
 	};
 };
@@ -27,6 +28,7 @@ const createScroll =
 		enabled
 			? motionScroll(onScroll, {
 					...options,
+					container: getNodeElement(node, options?.container),
 					target: getNodeElement(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
@@ -63,6 +65,7 @@ const createScrollAnimation =
 		enabled
 			? motionScroll(motionAnimate(getNodeElements(node, elements), keyframes, animationOptions), {
 					...options,
+					container: getNodeElement(node, options?.container),
 					target: getNodeElement(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
@@ -82,21 +85,3 @@ export const scrollAnimation: Action<HTMLElement, ScrollAnimationActionOptions> 
 		destroy
 	};
 };
-
-export const selfScroll = (node: HTMLElement, options: ScrollActionOptions) =>
-	scroll(node, {
-		...options,
-		options: {
-			...options.options,
-			target: node
-		}
-	});
-
-export const selfScrollAnimation = (node: HTMLElement, options: ScrollAnimationActionOptions) =>
-	scrollAnimation(node, {
-		...options,
-		options: {
-			...options.options,
-			target: node
-		}
-	});
