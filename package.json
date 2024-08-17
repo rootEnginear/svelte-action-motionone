@@ -1,6 +1,6 @@
 {
 	"name": "svelte-action-motion-one",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -47,5 +47,8 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"motion": "^10.18.0"
+	}
 }
