@@ -3,7 +3,7 @@
 	import { stagger } from 'motion';
 
 	let isInScreen = false;
-	let scrollY = 0;
+	let scrollPercentage = 0;
 
 	const viewBlurFade = createAction(inViewAnimation, {
 		animate: {
@@ -58,11 +58,11 @@
 <p
 	use:scroll={{
 		onScroll: (info) => {
-			scrollY = info.y.progress;
+			scrollPercentage = Math.round(info.y.progress * 100);
 		}
 	}}
 >
-	Your scroll position is: {scrollY}
+	Your scroll position is: {scrollPercentage}%
 </p>
 <p
 	style="background-color:red;height:100svh;"
@@ -73,6 +73,7 @@
 			}
 		},
 		options: {
+			target: '&',
 			offset: ['0 1', '0 0']
 		}
 	}}
