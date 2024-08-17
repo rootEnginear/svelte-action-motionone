@@ -1,5 +1,7 @@
 # svelte-action-motion-one
 
+> @rootenginear/svelte-action-motion-one
+
 Unofficial [Svelte Action](https://svelte.dev/docs/svelte-action) for [Motion One](https://motion.dev/) animation library
 
 ## Documentation
