@@ -19,14 +19,14 @@ export const getNodeElements = (
 	return query;
 };
 
-export const getNodeElement = (
-	node: HTMLElement,
-	elements?: string | Element
-): Element | undefined => {
+export const getNodeElement = <T extends Element>(
+	node: T,
+	elements?: string | T
+): T | undefined => {
 	if (typeof elements !== 'string') return elements;
 
 	const { isSelf, selector: query } = parseStringSelector(elements);
 	if (isSelf && query === '') return node;
-	if (isSelf) return node.querySelector(query) || undefined;
-	return document.querySelector(query) || undefined;
+	if (isSelf) return node.querySelector<T>(query) || undefined;
+	return document.querySelector<T>(query) || undefined;
 };
