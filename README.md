@@ -1,4 +1,4 @@
-# @rootenginear/svelte-action-motion-one
+# @rootenginear/svelte-action-motionone
 
 Unofficial [Svelte Action](https://svelte.dev/docs/svelte-action) for [Motion One](https://motion.dev/) animation library
 
@@ -30,7 +30,7 @@ Basically it's quite the same for Motion One, just passing params as object.
 
 ```svelte
 <script lang="ts">
-	import { inView } from '@rootenginear/svelte-action-motion-one';
+	import { inView } from '@rootenginear/svelte-action-motionone';
 
 	let isInScreen = false;
 
@@ -61,7 +61,7 @@ Basically it's quite the same for Motion One, just passing params as object.
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const viewBlurFade = {
 		animate: {
@@ -92,7 +92,7 @@ Basically it's quite the same for Motion One, just passing params as object.
 
 ```svelte
 <script lang="ts">
-	import { scroll } from '@rootenginear/svelte-action-motion-one';
+	import { scroll } from '@rootenginear/svelte-action-motionone';
 
 	let scrollPercent = 0;
 
@@ -112,7 +112,7 @@ Basically it's quite the same for Motion One, just passing params as object.
 
 ```svelte
 <script lang="ts">
-	import { scrollAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const scrollProgressBar = {
 		animate: {
@@ -132,7 +132,7 @@ Even though the API itself allows this:
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 </script>
 
 <h1
@@ -164,7 +164,7 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const blurFadeOptions = {
 		animate: {
@@ -191,7 +191,7 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 
 ```svelte
 <script lang="ts">
-	import { createAction, inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { createAction, inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const viewBlurFade = createAction(inViewAnimation, {
 		animate: {
@@ -235,7 +235,7 @@ Unlike `inView` which watch the current element intersection, `scroll` will use 
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 	import { stagger } from 'motion';
 
 	const listFadeOptions = {
@@ -277,7 +277,7 @@ Parallax image are basically shift-on-scroll image
 
 ```svelte
 <script lang="ts">
-	import { scrollAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const parallaxOptions = {
 		animate: {

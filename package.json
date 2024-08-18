@@ -1,6 +1,7 @@
 {
-	"name": "@rootenginear/svelte-action-motion-one",
+	"name": "@rootenginear/svelte-action-motionone",
 	"version": "0.2.0",
+	"description": "Unofficial Svelte Action for Motion One animation library",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -50,5 +51,26 @@
 	"type": "module",
 	"dependencies": {
 		"motion": "^10.18.0"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rootEnginear/svelte-action-motionone.git"
+	},
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"svelte-action",
+		"motion",
+		"motionone"
+	],
+	"author": {
+		"name": "Suthep Chanchuphol (rootEnginear)",
+		"email": "rootenginear@users.noreply.github.com",
+		"url": "https://rootenginear.github.io/"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/rootEnginear/svelte-action-motionone/issues"
+	},
+	"homepage": "https://github.com/rootEnginear/svelte-action-motionone#readme"
 }
