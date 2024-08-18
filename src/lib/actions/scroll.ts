@@ -23,17 +23,17 @@ export type ScrollActionOptions = ActionOptions &
 	};
 
 const createScroll =
-	(node: HTMLElement) =>
+	(node: Element) =>
 	({ onScroll, options, enabled = true }: ScrollActionOptions) =>
 		enabled
 			? motionScroll(onScroll, {
 					...options,
-					container: getNodeElement(node, options?.container),
+					container: getNodeElement(node as HTMLElement, options?.container),
 					target: getNodeElement(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
 
-export const scroll: Action<HTMLElement, ScrollActionOptions> = (node, options) => {
+export const scroll: Action<Element, ScrollActionOptions> = (node, options) => {
 	const nodeScroll = createScroll(node);
 	let destroy = nodeScroll(options);
 
@@ -56,7 +56,7 @@ export type ScrollAnimationActionOptions = ActionOptions &
 	};
 
 const createScrollAnimation =
-	(node: HTMLElement) =>
+	(node: Element) =>
 	({
 		options,
 		animate: { elements = '&', keyframes, options: animationOptions },
@@ -65,15 +65,12 @@ const createScrollAnimation =
 		enabled
 			? motionScroll(motionAnimate(getNodeElements(node, elements), keyframes, animationOptions), {
 					...options,
-					container: getNodeElement(node, options?.container),
+					container: getNodeElement(node as HTMLElement, options?.container),
 					target: getNodeElement(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
 
-export const scrollAnimation: Action<HTMLElement, ScrollAnimationActionOptions> = (
-	node,
-	options
-) => {
+export const scrollAnimation: Action<Element, ScrollAnimationActionOptions> = (node, options) => {
 	const nodeScrollAnimation = createScrollAnimation(node);
 	let destroy = nodeScrollAnimation(options);
 

@@ -12,6 +12,6 @@ export interface ActionOptions {
  * <div use:fullInView />
  */
 export const createAction =
-	<O, F>(f: (node: HTMLElement, options: O) => F, options: NoInfer<O>) =>
-	(node: HTMLElement) =>
+	<O, F>(f: (node: Element, options: O) => F, options: NoInfer<O>) =>
+	(node: Element) =>
 		f(node, options);
