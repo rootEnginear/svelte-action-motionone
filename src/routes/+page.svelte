@@ -1,9 +1,12 @@
 <script lang="ts">
+	import type { ScrollAnimationActionOptions } from '$lib/index.js';
 	import { createAction, inView, inViewAnimation, scroll, scrollAnimation } from '$lib/index.js';
 	import { stagger } from 'motion';
+	import { onMount } from 'svelte';
 
 	let isInScreen = false;
 	let scrollPercentage = 0;
+	let reducedMotion = true;
 
 	const viewBlurFade = createAction(inViewAnimation, {
 		animate: {
@@ -21,6 +24,24 @@
 			amount: 1
 		},
 		repeat: true
+	});
+
+	$: parallaxOptions = {
+		animate: {
+			keyframes: {
+				transform: ['translateY(10%)', 'translateY(-10%)']
+			}
+		},
+		options: {
+			target: '&',
+			offset: ['0 1', '1 0']
+		},
+		enabled: !reducedMotion
+	} satisfies ScrollAnimationActionOptions;
+
+	onMount(() => {
+		reducedMotion = window.matchMedia('(prefers-reduced-motion)').matches;
+		console.log(reducedMotion);
 	});
 </script>
 
@@ -106,16 +127,6 @@
 	height="200"
 	loading="eager"
 	decoding="async"
-	use:scrollAnimation={{
-		animate: {
-			keyframes: {
-				transform: ['translateY(10%)', 'translateY(-10%)']
-			}
-		},
-		options: {
-			target: '&',
-			offset: ['0 1', '1 0']
-		}
-	}}
+	use:scrollAnimation={parallaxOptions}
 />
 <div style="height:100svh">Scroll down!</div>
