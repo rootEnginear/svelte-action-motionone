@@ -1,20 +1,37 @@
-# @rootenginear/svelte-action-motion-one
+# @rootenginear/svelte-action-motionone
 
 Unofficial [Svelte Action](https://svelte.dev/docs/svelte-action) for [Motion One](https://motion.dev/) animation library
+
+> https://www.npmjs.com/package/@rootenginear/svelte-action-motionone
+
+```bash
+pnpm install @rootenginear/svelte-action-motionone
+```
+
+```bash
+yarn install @rootenginear/svelte-action-motionone
+```
+
+```bash
+npm install @rootenginear/svelte-action-motionone
+```
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [Documentation](#documentation)
-  - [`inView`](#inview)
-  - [`inViewAnimation`](#inviewanimation)
-  - [`scroll`](#scroll)
-  - [`scrollAnimation`](#scrollanimation)
+  - [`use:inView`](#useinview)
+  - [`use:inViewAnimation`](#useinviewanimation)
+    - [`repeat`](#repeat)
+  - [`use:scroll`](#usescroll)
+  - [`use:scrollAnimation`](#usescrollanimation)
+  - [`enabled`](#enabled)
 - [Best Practice](#best-practice)
   - [Way 1: Extract the options](#way-1-extract-the-options)
   - [Way 2: Extract the whole action with `createAction`](#way-2-extract-the-whole-action-with-createaction)
 - [Gotchas](#gotchas)
   - [`scroll`/`scrollAnimation` use window scroll](#scrollscrollanimation-use-window-scroll)
+  - [Options must be reactive when `enabled` option can change](#options-must-be-reactive-when-enabled-option-can-change)
 - [More Examples](#more-examples)
   - [Staggered Animation](#staggered-animation)
   - [Parallax Image](#parallax-image)
@@ -24,13 +41,13 @@ Unofficial [Svelte Action](https://svelte.dev/docs/svelte-action) for [Motion On
 
 Basically it's quite the same for Motion One, just passing params as object.
 
-### `inView`
+### `use:inView`
 
 > https://motion.dev/docs/inview
 
 ```svelte
 <script lang="ts">
-	import { inView } from '@rootenginear/svelte-action-motion-one';
+	import { inView } from '@rootenginear/svelte-action-motionone';
 
 	let isInScreen = false;
 
@@ -48,20 +65,21 @@ Basically it's quite the same for Motion One, just passing params as object.
 	};
 </script>
 
-<h1 use:inView={headerInView}>
+<p use:inView={headerInView}>
 	{#if isInScreen}
 		<span>Now you see me</span>
 	{:else}
 		<span>Now you don't</span>
 	{/if}
-</h1>
+</p>
 ```
 
-### `inViewAnimation`
+### `use:inViewAnimation`
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import type { InViewAnimationActionOptions } from '@rootenginear/svelte-action-motionone';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const viewBlurFade = {
 		animate: {
@@ -71,20 +89,47 @@ Basically it's quite the same for Motion One, just passing params as object.
 				filter: ['blur(20px)', 'blur(0px)']
 			},
 			options: {
-				duration: 0.5,
-				easing: [0.22, 1, 0.36, 1]
+				duration: 0.5
 			}
 		},
 		options: {
 			amount: 1
 		}
+	} satisfies InViewAnimationActionOptions;
+</script>
+
+<h1 class="opacity-0" use:inViewAnimation={viewBlurFade}>Hello World!</h1>
+```
+
+#### `repeat`
+
+Normally when the element is in the viewport and the animation is done, it's done. You can specify it to replay when it's in the viewport again using `repeat` option
+
+```svelte
+<script lang="ts">
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
+
+	const slideUp = {
+		animate: {
+			keyframes: {
+				opacity: [0, 1],
+				transform: ['translateY(10px)', 'translateY(0px)']
+			},
+			options: {
+				duration: 0.5
+			}
+		},
+		options: {
+			amount: 1
+		},
+		repeat: true
 	};
 </script>
 
-<h1 class="opacity-0" use:inViewAnimation={viewBlurFade}>Hello Welcome</h1>
+<h1 class="opacity-0" use:inViewAnimation={slideUp}>Hello World!</h1>
 ```
 
-### `scroll`
+### `use:scroll`
 
 > https://motion.dev/docs/scroll
 
@@ -92,7 +137,8 @@ Basically it's quite the same for Motion One, just passing params as object.
 
 ```svelte
 <script lang="ts">
-	import { scroll } from '@rootenginear/svelte-action-motion-one';
+	import type { ScrollActionOptions } from '@rootenginear/svelte-action-motionone';
+	import { scroll } from '@rootenginear/svelte-action-motionone';
 
 	let scrollPercent = 0;
 
@@ -100,19 +146,19 @@ Basically it's quite the same for Motion One, just passing params as object.
 		onScroll: (info) => {
 			scrollPercent = Math.round(info.y.progress * 100);
 		}
-	};
+	} satisfies ScrollActionOptions;
 </script>
 
 <div use:scroll={scrollProgress}>You've scroll for {scrollPercent}%</div>
 ```
 
-### `scrollAnimation`
+### `use:scrollAnimation`
 
 > Gotcha! `scrollAnimation` use **window scroll**. Read [Gotchas](#gotchas)
 
 ```svelte
 <script lang="ts">
-	import { scrollAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const scrollProgressBar = {
 		animate: {
@@ -126,13 +172,56 @@ Basically it's quite the same for Motion One, just passing params as object.
 <div class="fixed h-4 bg-blue-500 top-0 left-0 z-50" use:scrollAnimation={scrollProgressBar}></div>
 ```
 
+### `enabled`
+
+You can enable or disable the animation using `enabled` option. For example, you might want to disable the animation if the user prefers reduced motion.
+
+> Gotcha! The **option must be reactive** so it can update properly!
+
+```svelte
+<script lang="ts">
+	import type { ScrollAnimationActionOptions } from '@rootenginear/svelte-action-motionone';
+	import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
+	import { onMount } from 'svelte';
+
+	let reducedMotion = true;
+
+	$: parallaxOptions = {
+		animate: {
+			keyframes: {
+				transform: ['translateY(10%)', 'translateY(-10%)']
+			}
+		},
+		options: {
+			target: '&',
+			offset: ['0 1', '1 0']
+		},
+		enabled: !reducedMotion
+	} satisfies ScrollAnimationActionOptions;
+
+	onMount(() => {
+		reducedMotion = window.matchMedia('(prefers-reduced-motion)').matches;
+	});
+</script>
+
+<img
+	src="https://picsum.photos/300/200"
+	alt=""
+	width="300"
+	height="200"
+	loading="eager"
+	decoding="async"
+	use:scrollAnimation={parallaxOptions}
+/>
+```
+
 ## Best Practice
 
 Even though the API itself allows this:
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 </script>
 
 <h1
@@ -145,8 +234,7 @@ Even though the API itself allows this:
 				filter: ['blur(20px)', 'blur(0px)']
 			},
 			options: {
-				duration: 0.5,
-				easing: [0.22, 1, 0.36, 1]
+				duration: 0.5
 			}
 		},
 		options: {
@@ -154,7 +242,7 @@ Even though the API itself allows this:
 		}
 	}}
 >
-	Hello Welcome
+	Hello World!
 </h1>
 ```
 
@@ -164,9 +252,10 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import type { InViewAnimationActionOptions } from '@rootenginear/svelte-action-motionone';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
-	const blurFadeOptions = {
+	const viewBlurFade = {
 		animate: {
 			keyframes: {
 				opacity: [0, 1],
@@ -174,24 +263,23 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 				filter: ['blur(20px)', 'blur(0px)']
 			},
 			options: {
-				duration: 0.5,
-				easing: [0.22, 1, 0.36, 1]
+				duration: 0.5
 			}
 		},
 		options: {
 			amount: 1
 		}
-	};
+	} satisfies InViewAnimationActionOptions;
 </script>
 
-<h1 class="opacity-0" use:inViewAnimation={blurFadeOptions}>Hello Welcome</h1>
+<h1 class="opacity-0" use:inViewAnimation={viewBlurFade}>Hello World!</h1>
 ```
 
 ### Way 2: Extract the whole action with `createAction`
 
 ```svelte
 <script lang="ts">
-	import { createAction, inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { createAction, inViewAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const viewBlurFade = createAction(inViewAnimation, {
 		animate: {
@@ -201,8 +289,7 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 				filter: ['blur(20px)', 'blur(0px)']
 			},
 			options: {
-				duration: 0.5,
-				easing: [0.22, 1, 0.36, 1]
+				duration: 0.5
 			}
 		},
 		options: {
@@ -211,7 +298,7 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 	});
 </script>
 
-<h1 class="opacity-0" use:viewBlurFade>Hello Welcome</h1>
+<h1 class="opacity-0" use:viewBlurFade>Hello World!</h1>
 ```
 
 ## Gotchas
@@ -220,8 +307,8 @@ The amount of your code smell will be skyrocketed if you keep doing this. Instea
 
 **Fix:**
 
-- Watch the scroll of itself: set `options.container` to `'&'`
-- Animate itself relative to viewport: set `options.target` to `'&'`
+- Watch the scroll of the element: set `options.container` to `'&'`
+- Animate the element relative to viewport: set `options.target` to `'&'`
 
 Unlike `inView` which watch the current element intersection, `scroll` will use window scroll instead of the element itself by default.
 
@@ -229,13 +316,21 @@ Unlike `inView` which watch the current element intersection, `scroll` will use 
 
 > This used to be an action in `v0.1.0` but I was wrong about Motion's `scroll` behavior and the name could be confusing. Still, there might be actions for this in the future.
 
+### Options must be reactive when `enabled` option can change
+
+**Fix:** Use `$: yourOptions = {...}`
+
+You might be copy-pasting those code above. Then add the `enabled` option with something that is reactive (like, your custom JS media query thingy) and it's not working. It's because the option might be a `const` or `let` which is not reactive to it's dependencies.
+
+So just make it reactive — [Read about Svelte Reactive Statement](https://svelte.dev/docs/svelte-components#script-3-$-marks-a-statement-as-reactive)
+
 ## More Examples
 
 ### Staggered Animation
 
 ```svelte
 <script lang="ts">
-	import { inViewAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 	import { stagger } from 'motion';
 
 	const listFadeOptions = {
@@ -259,13 +354,6 @@ Unlike `inView` which watch the current element intersection, `scroll` will use 
 	<li class="opacity-0">001</li>
 	<li class="opacity-0">002</li>
 	<li class="opacity-0">003</li>
-	<li class="opacity-0">004</li>
-	<li class="opacity-0">005</li>
-	<li class="opacity-0">006</li>
-	<li class="opacity-0">007</li>
-	<li class="opacity-0">008</li>
-	<li class="opacity-0">009</li>
-	<li class="opacity-0">010</li>
 </ul>
 ```
 
@@ -277,7 +365,7 @@ Parallax image are basically shift-on-scroll image
 
 ```svelte
 <script lang="ts">
-	import { scrollAnimation } from '@rootenginear/svelte-action-motion-one';
+	import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
 
 	const parallaxOptions = {
 		animate: {
@@ -308,7 +396,9 @@ Parallax image are basically shift-on-scroll image
 1. Replicate Motion's API as close as possible
 2. Extend the selector capability with `&` and `&>` for self referencing[^1]
 3. API that is not the part of Motion must not be mixed with Motion's option. Eg: the `enabled` keyword
-4. Animate the current element that `___Animation` action is attached to by default[^2]
+4. Animate the current element that `use:___Animation` is attached to by default[^2]
+
+---
 
 [^1]: You might want to do a [staggered animation](https://motion.dev/docs/stagger) on the children which normally is trivial to attach the base animation to the parent. In this case, you can reference the children elements by using `&>li` (or others) selector.
 
