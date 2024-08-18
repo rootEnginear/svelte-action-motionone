@@ -7,10 +7,7 @@ const parseStringSelector = (selector: string): { isSelf: boolean; selector: str
 	return { isSelf: false, selector: selector.trim() };
 };
 
-export const getNodeElements = (
-	node: HTMLElement,
-	elements: ElementOrSelector
-): ElementOrSelector => {
+export const getNodeElements = (node: Element, elements: ElementOrSelector): ElementOrSelector => {
 	if (typeof elements !== 'string') return elements;
 
 	const { isSelf, selector: query } = parseStringSelector(elements);
@@ -19,13 +16,10 @@ export const getNodeElements = (
 	return query;
 };
 
-export const getNodeElement = <T extends Element>(
-	node: T,
-	elements?: string | T
-): T | undefined => {
-	if (typeof elements !== 'string') return elements;
+export const getNodeElement = <T extends Element>(node: T, element?: string | T): T | undefined => {
+	if (typeof element !== 'string') return element;
 
-	const { isSelf, selector: query } = parseStringSelector(elements);
+	const { isSelf, selector: query } = parseStringSelector(element);
 	if (isSelf && query === '') return node;
 	if (isSelf) return node.querySelector<T>(query) || undefined;
 	return document.querySelector<T>(query) || undefined;

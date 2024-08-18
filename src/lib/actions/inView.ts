@@ -16,11 +16,11 @@ export type InViewActionOptions = ActionOptions & {
 };
 
 const createInView =
-	(node: HTMLElement) =>
+	(node: Element) =>
 	({ onStart, options, enabled = true }: InViewActionOptions) =>
 		enabled ? motionInView(node, onStart, options) : EMPTY_FUNCTION;
 
-export const inView: Action<HTMLElement, InViewActionOptions> = (node, options) => {
+export const inView: Action<Element, InViewActionOptions> = (node, options) => {
 	const nodeInView = createInView(node);
 	let destroy = nodeInView(options);
 
@@ -44,7 +44,7 @@ export type InViewAnimationActionOptions = ActionOptions & {
 };
 
 const createInViewAnimation =
-	(node: HTMLElement) =>
+	(node: Element) =>
 	({
 		options,
 		animate: { elements = '&', keyframes, options: animationOptions },
@@ -62,10 +62,7 @@ const createInViewAnimation =
 				)
 			: EMPTY_FUNCTION;
 
-export const inViewAnimation: Action<HTMLElement, InViewAnimationActionOptions> = (
-	node,
-	options
-) => {
+export const inViewAnimation: Action<Element, InViewAnimationActionOptions> = (node, options) => {
 	const nodeInViewAnimation = createInViewAnimation(node);
 	let destroy = nodeInViewAnimation(options);
 
