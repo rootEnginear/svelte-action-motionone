@@ -2,6 +2,7 @@ export const EMPTY_FUNCTION = () => {};
 
 export interface ActionOptions {
 	enabled?: boolean;
+	onMount?: (node: Element) => void;
 }
 
 /**

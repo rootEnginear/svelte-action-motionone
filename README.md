@@ -25,7 +25,9 @@ npm install @rootenginear/svelte-action-motionone
     - [`repeat`](#repeat)
   - [`use:scroll`](#usescroll)
   - [`use:scrollAnimation`](#usescrollanimation)
-  - [`enabled`](#enabled)
+  - [Custom Options](#custom-options)
+    - [`enabled`](#enabled)
+    - [`onMount`](#onmount)
 - [Best Practice](#best-practice)
   - [Way 1: Extract the options](#way-1-extract-the-options)
   - [Way 2: Extract the whole action with `createAction`](#way-2-extract-the-whole-action-with-createaction)
@@ -35,7 +37,7 @@ npm install @rootenginear/svelte-action-motionone
 - [More Examples](#more-examples)
   - [Staggered Animation](#staggered-animation)
   - [Parallax Image](#parallax-image)
-- [Design Principle](#design-principle)
+- [Design Principles](#design-principles)
 
 ## Documentation
 
@@ -102,6 +104,8 @@ Basically it's quite the same for Motion One, just passing params as object.
 ```
 
 #### `repeat`
+
+> `repeat?: boolean = undefined`
 
 Normally when the element is in the viewport and the animation is done, it's done. You can specify it to replay when it's in the viewport again using `repeat` option
 
@@ -172,7 +176,13 @@ Normally when the element is in the viewport and the animation is done, it's don
 <div class="fixed h-4 bg-blue-500 top-0 left-0 z-50" use:scrollAnimation={scrollProgressBar}></div>
 ```
 
-### `enabled`
+### Custom Options
+
+To further customize the behavior of the action, I have added some useful options to them. These options lies outside of the Motion-related options, so you can be sure to not mix them together (Read [Design Principles](#design-principles)).
+
+#### `enabled`
+
+> `enabled?: boolean = true`
 
 You can enable or disable the animation using `enabled` option. For example, you might want to disable the animation if the user prefers reduced motion.
 
@@ -213,6 +223,37 @@ You can enable or disable the animation using `enabled` option. For example, you
 	decoding="async"
 	use:scrollAnimation={parallaxOptions}
 />
+```
+
+#### `onMount`
+
+> `onMount?: (node: Element) => void`
+
+When doing a fade `inViewAnimation`, you might want to add opacity style so the element won't flash when the animation start. You can do this "pre-animation setup" with `onMount` option.
+
+```svelte
+<script lang="ts">
+	import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
+
+	const fadeAnimationOptions = {
+		animate: {
+			keyframes: {
+				opacity: [0, 1]
+			},
+			options: {
+				duration: 0.5
+			}
+		},
+		options: {
+			amount: 1
+		},
+		onMount: (node: HTMLElement) => {
+			node.style.opacity = '0';
+		}
+	};
+</script>
+
+<p use:inViewAnimation={fadeAnimationOptions}>This is lit</p>
 ```
 
 ## Best Practice
@@ -391,7 +432,7 @@ Parallax image are basically shift-on-scroll image
 />
 ```
 
-## Design Principle
+## Design Principles
 
 1. Replicate Motion's API as close as possible
 2. Extend the selector capability with `&` and `&>` for self referencing[^1]

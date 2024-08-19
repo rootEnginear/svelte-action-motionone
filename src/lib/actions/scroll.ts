@@ -34,6 +34,8 @@ const createScroll =
 			: EMPTY_FUNCTION;
 
 export const scroll: Action<Element, ScrollActionOptions> = (node, options) => {
+	options.onMount?.(node);
+
 	const nodeScroll = createScroll(node);
 	let destroy = nodeScroll(options);
 
@@ -71,6 +73,8 @@ const createScrollAnimation =
 			: EMPTY_FUNCTION;
 
 export const scrollAnimation: Action<Element, ScrollAnimationActionOptions> = (node, options) => {
+	options.onMount?.(node);
+
 	const nodeScrollAnimation = createScrollAnimation(node);
 	let destroy = nodeScrollAnimation(options);
 

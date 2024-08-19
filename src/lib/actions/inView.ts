@@ -21,6 +21,8 @@ const createInView =
 		enabled ? motionInView(node, onStart, options) : EMPTY_FUNCTION;
 
 export const inView: Action<Element, InViewActionOptions> = (node, options) => {
+	options.onMount?.(node);
+
 	const nodeInView = createInView(node);
 	let destroy = nodeInView(options);
 
@@ -63,6 +65,8 @@ const createInViewAnimation =
 			: EMPTY_FUNCTION;
 
 export const inViewAnimation: Action<Element, InViewAnimationActionOptions> = (node, options) => {
+	options.onMount?.(node);
+
 	const nodeInViewAnimation = createInViewAnimation(node);
 	let destroy = nodeInViewAnimation(options);
 
