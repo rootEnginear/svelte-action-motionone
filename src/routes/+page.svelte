@@ -23,7 +23,10 @@
 		options: {
 			amount: 1
 		},
-		repeat: true
+		repeat: true,
+		onMount: (node) => {
+			node.classList.add('opacity-0');
+		}
 	});
 
 	$: parallaxOptions = {
