@@ -14,5 +14,5 @@ export interface ActionOptions {
  */
 export const createAction =
 	<O, F>(f: (node: Element, options: O) => F, options: NoInfer<O>) =>
-	(node: Element) =>
+	(node: Element): F =>
 		f(node, options);

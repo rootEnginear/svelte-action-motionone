@@ -1,0 +1,8 @@
+{
+	"name": "@rootenginear/svelte-action-motionone",
+	"version": "0.4.0",
+	"exports": "./src/lib/index.ts",
+	"publish": {
+		"include": ["./src/lib/**/*", "./LICENSE", "./README.md", "./package.json", "./jsr.json"]
+	}
+}

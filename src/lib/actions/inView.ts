@@ -1,5 +1,3 @@
-import { EMPTY_FUNCTION, type ActionOptions } from '$lib/utils/action.js';
-import { getNodeElements } from '$lib/utils/selector.js';
 import type {
 	AnimationOptions,
 	ElementOrSelector,
@@ -9,6 +7,8 @@ import type {
 } from 'motion';
 import { animate as motionAnimate, inView as motionInView } from 'motion';
 import type { Action } from 'svelte/action';
+import { EMPTY_FUNCTION, type ActionOptions } from '../utils/action.js';
+import { getNodeElements } from '../utils/selector.js';
 
 export type InViewActionOptions = ActionOptions & {
 	onStart: (entry: IntersectionObserverEntry) => void | ViewChangeHandler;
