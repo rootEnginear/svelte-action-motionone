@@ -10,18 +10,31 @@ import type { Action } from 'svelte/action';
 import { EMPTY_FUNCTION, type ActionOptions } from '../utils/action.js';
 import {
 	getMultipleElementsFromSelector,
-	type MultipleFunctionSelector
+	getSingleElementFromSelector,
+	type MultipleFunctionSelector,
+	type SingleFunctionSelector
 } from '../utils/selector.js';
 
-export type InViewActionOptions = ActionOptions & {
-	onStart: (entry: IntersectionObserverEntry) => void | ViewChangeHandler;
-	options?: InViewOptions;
+export type ExtendedInViewOptions = {
+	options?: Omit<InViewOptions, 'root'> & {
+		root?: InViewOptions['root'] | string | SingleFunctionSelector;
+	};
 };
+
+export type InViewActionOptions = ActionOptions &
+	ExtendedInViewOptions & {
+		onStart: (entry: IntersectionObserverEntry) => void | ViewChangeHandler;
+	};
 
 const createInView =
 	(node: Element) =>
 	({ onStart, options, enabled = true }: InViewActionOptions) =>
-		enabled ? motionInView(node, onStart, options) : EMPTY_FUNCTION;
+		enabled
+			? motionInView(node, onStart, {
+					...options,
+					root: getSingleElementFromSelector(node, options?.root)
+				})
+			: EMPTY_FUNCTION;
 
 export const inView: Action<Element, InViewActionOptions> = (
 	node,
