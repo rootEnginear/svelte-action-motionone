@@ -8,7 +8,10 @@ import type {
 import { animate as motionAnimate, inView as motionInView } from 'motion';
 import type { Action } from 'svelte/action';
 import { EMPTY_FUNCTION, type ActionOptions } from '../utils/action.js';
-import { getNodeElements } from '../utils/selector.js';
+import {
+	getMultipleElementsFromSelector,
+	type MultipleFunctionSelector
+} from '../utils/selector.js';
 
 export type InViewActionOptions = ActionOptions & {
 	onStart: (entry: IntersectionObserverEntry) => void | ViewChangeHandler;
@@ -20,7 +23,10 @@ const createInView =
 	({ onStart, options, enabled = true }: InViewActionOptions) =>
 		enabled ? motionInView(node, onStart, options) : EMPTY_FUNCTION;
 
-export const inView: Action<Element, InViewActionOptions> = (node, options) => {
+export const inView: Action<Element, InViewActionOptions> = (
+	node,
+	options: InViewActionOptions
+) => {
 	options.onMount?.(node);
 
 	const nodeInView = createInView(node);
@@ -37,7 +43,7 @@ export const inView: Action<Element, InViewActionOptions> = (node, options) => {
 
 export type InViewAnimationActionOptions = ActionOptions & {
 	animate: {
-		elements?: ElementOrSelector;
+		elements?: ElementOrSelector | MultipleFunctionSelector;
 		keyframes: MotionKeyframesDefinition;
 		options?: AnimationOptions;
 	};
@@ -57,14 +63,21 @@ const createInViewAnimation =
 			? motionInView(
 					node,
 					() => {
-						motionAnimate(getNodeElements(node, elements), keyframes, animationOptions);
+						motionAnimate(
+							getMultipleElementsFromSelector(node, elements),
+							keyframes,
+							animationOptions
+						);
 						if (repeat) return () => {};
 					},
 					options
 				)
 			: EMPTY_FUNCTION;
 
-export const inViewAnimation: Action<Element, InViewAnimationActionOptions> = (node, options) => {
+export const inViewAnimation: Action<Element, InViewAnimationActionOptions> = (
+	node,
+	options: InViewAnimationActionOptions
+) => {
 	options.onMount?.(node);
 
 	const nodeInViewAnimation = createInViewAnimation(node);

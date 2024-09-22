@@ -8,12 +8,17 @@ import type {
 import { animate as motionAnimate, scroll as motionScroll } from 'motion';
 import type { Action } from 'svelte/action';
 import { EMPTY_FUNCTION, type ActionOptions } from '../utils/action.js';
-import { getNodeElement, getNodeElements } from '../utils/selector.js';
+import {
+	getMultipleElementsFromSelector,
+	getSingleElementFromSelector,
+	type MultipleFunctionSelector,
+	type SingleFunctionSelector
+} from '../utils/selector.js';
 
 export type ExtendedScrollOptions = {
 	options?: Omit<ScrollOptions, 'container' | 'target'> & {
-		container?: string | ScrollOptions['container'];
-		target?: string | ScrollOptions['target'];
+		container?: ScrollOptions['container'] | string | SingleFunctionSelector;
+		target?: ScrollOptions['target'] | string | SingleFunctionSelector;
 	};
 };
 
@@ -28,12 +33,15 @@ const createScroll =
 		enabled
 			? motionScroll(onScroll, {
 					...options,
-					container: getNodeElement(node as HTMLElement, options?.container),
-					target: getNodeElement(node, options?.target)
+					container: getSingleElementFromSelector(node as HTMLElement, options?.container),
+					target: getSingleElementFromSelector(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
 
-export const scroll: Action<Element, ScrollActionOptions> = (node, options) => {
+export const scroll: Action<Element, ScrollActionOptions> = (
+	node,
+	options: ScrollActionOptions
+) => {
 	options.onMount?.(node);
 
 	const nodeScroll = createScroll(node);
@@ -51,7 +59,7 @@ export const scroll: Action<Element, ScrollActionOptions> = (node, options) => {
 export type ScrollAnimationActionOptions = ActionOptions &
 	ExtendedScrollOptions & {
 		animate: {
-			elements?: ElementOrSelector;
+			elements?: ElementOrSelector | MultipleFunctionSelector;
 			keyframes: MotionKeyframesDefinition;
 			options?: AnimationOptions;
 		};
@@ -65,14 +73,24 @@ const createScrollAnimation =
 		enabled = true
 	}: ScrollAnimationActionOptions) =>
 		enabled
-			? motionScroll(motionAnimate(getNodeElements(node, elements), keyframes, animationOptions), {
-					...options,
-					container: getNodeElement(node as HTMLElement, options?.container),
-					target: getNodeElement(node, options?.target)
-				})
+			? motionScroll(
+					motionAnimate(
+						getMultipleElementsFromSelector(node, elements),
+						keyframes,
+						animationOptions
+					),
+					{
+						...options,
+						container: getSingleElementFromSelector(node as HTMLElement, options?.container),
+						target: getSingleElementFromSelector(node, options?.target)
+					}
+				)
 			: EMPTY_FUNCTION;
 
-export const scrollAnimation: Action<Element, ScrollAnimationActionOptions> = (node, options) => {
+export const scrollAnimation: Action<Element, ScrollAnimationActionOptions> = (
+	node,
+	options: ScrollAnimationActionOptions
+) => {
 	options.onMount?.(node);
 
 	const nodeScrollAnimation = createScrollAnimation(node);
