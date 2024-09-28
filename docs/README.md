@@ -24,6 +24,9 @@ deno add jsr:@rootenginear/svelte-action-motionone
 	- [Custom Options](#custom-options)
 		- [`enabled`](#enabled)
 		- [`onMount`](#onmount)
+	- [Extended Selector](#extended-selector)
+		- [Using `&` selector](#using--selector)
+		- [Using function selector](#using-function-selector)
 - [Best Practice](#best-practice)
 	- [Way 1: Extract the options](#way-1-extract-the-options)
 	- [Way 2: Extract the whole action with `createAction`](#way-2-extract-the-whole-action-with-createaction)
@@ -252,6 +255,58 @@ When doing a fade `inViewAnimation`, you might want to add opacity style so the 
 <p use:inViewAnimation={fadeAnimationOptions}>This is lit</p>
 ```
 
+### Extended Selector
+
+In some cases, you will need to reference to the children inside of the element that the action is attached to (for example, [Staggered Animation](#staggered-animation)). Since the action have the access to the base element, I have extended the capability of some options to be able to easily reference to that node.
+
+Options accepting one element:
+
+- `InViewActionOptions.options.root`
+- `InViewAnimationActionOptions.options.root`
+- `ScrollActionOptions.options.container`
+- `ScrollActionOptions.options.target`
+- `ScrollAnimationActionOptions.options.container`
+- `ScrollAnimationActionOptions.options.target`
+
+Options Accepting multiple elements:
+
+- `InViewAnimationActionOptions.animate.elements`
+- `ScrollAnimationActionOptions.animate.elements`
+
+#### Using `&` selector
+
+- To reference to the element (that the action is attached to), use `&`
+- For children, the string must be only prefixed with the following: `& `, `&>`, `&+`, `&~`. For example, `&>li`.
+
+#### Using function selector
+
+```ts
+export type SingleFunctionSelector = (node: Element) => Element | undefined;
+export type MultipleFunctionSelector = (
+	node: Element
+) => Element | Element[] | NodeListOf<Element> | string;
+```
+
+Example:
+
+```diff
+const parentInViewFlyIn = createAction(inViewAnimation, {
+	animate: {
++		elements: (node) => [...node.children],
+		keyframes: {
+			opacity: [0, 1],
+			transform: ['translateY(10px)', 'translateY(0px)']
+		}
+	},
+	options: {
++		root: (node) => node.parentElement ?? undefined
+	},
+	onMount: (node) => {
+		node.classList.add('opacity-0');
+	}
+});
+```
+
 ## Best Practice
 
 Even though the API itself allows this:
@@ -431,7 +486,7 @@ Parallax image are basically shift-on-scroll image
 ## Design Principles
 
 1. Replicate Motion's API as close as possible
-2. Extend the selector capability with `&` and `&>` for self referencing[^1]
+2. Extend the selector capability with self referencing and function selector[^1]
 3. API that is not the part of Motion must not be mixed with Motion's option. Eg: the `enabled` keyword
 4. Animate the current element that `use:___Animation` is attached to by default[^2]
 
