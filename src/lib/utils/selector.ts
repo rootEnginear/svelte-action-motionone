@@ -1,29 +1,16 @@
 import type { ElementOrSelector } from 'motion';
 import { getUniqueId } from './id.js';
 
-const isDocument = (node: Element | Document): node is Document => node.nodeName === '#document';
-
 export type MultipleFunctionSelector = (node: Element) => ElementOrSelector;
-export type SingleFunctionSelector = <T extends Element | Document>(node: T) => T | undefined;
+export type SingleFunctionSelector = (node: Element) => Element | undefined;
 
+function getElementsUsingNodeParent(node: Element, restSelector: string): NodeListOf<Element>;
 function getElementsUsingNodeParent(
-	node: Element | Document,
-	restSelector: string
-): NodeListOf<Element>;
-function getElementsUsingNodeParent<T extends Element | Document>(
-	node: T,
+	node: Element,
 	restSelector: string,
 	single: true
-): T | null;
-function getElementsUsingNodeParent(
-	node: Element | Document,
-	restSelector: string,
-	single = false
-) {
-	if (isDocument(node)) {
-		const selector = `html${restSelector}`;
-		return single ? document.querySelector(selector) : document.querySelectorAll(selector);
-	}
+): Element | null;
+function getElementsUsingNodeParent(node: Element, restSelector: string, single = false) {
 	const id = getUniqueId();
 	node.setAttribute('data-svelte-use-motionone-id', `${id}`);
 	const element = node.parentElement ?? document;
@@ -53,23 +40,25 @@ export const getMultipleElementsFromSelector = (
 	}
 };
 
-export const getSingleElementFromSelector = <T extends Element | Document>(
-	node: T,
+export const getSingleElementFromSelector = <T extends Element>(
+	node: Element,
 	selector?: T | string | SingleFunctionSelector
 ): T | undefined => {
 	if (selector === undefined) return undefined;
-	if (typeof selector === 'function') return selector(node);
+	if (typeof selector === 'function') return selector(node) as T;
 	if (typeof selector !== 'string') return selector;
 	const trimmedSelector = selector.trim();
-	if (trimmedSelector === '&') return node;
+	if (trimmedSelector === '&') return node as T;
 	switch (trimmedSelector.slice(0, 2)) {
 		case '& ':
-			return node.querySelector<Exclude<T, Document>>(trimmedSelector.slice(2)) ?? undefined;
+			return node.querySelector<T>(trimmedSelector.slice(2)) ?? undefined;
 		case '&>':
 		case '&+':
 		case '&~':
-			return getElementsUsingNodeParent(node, trimmedSelector.slice(1), true) ?? undefined;
+			return (
+				(getElementsUsingNodeParent(node, trimmedSelector.slice(1), true) as T | null) ?? undefined
+			);
 		default:
-			return document.querySelector<Exclude<T, Document>>(trimmedSelector) ?? undefined;
+			return document.querySelector<T>(trimmedSelector) ?? undefined;
 	}
 };

@@ -36,7 +36,7 @@ const createScroll =
 		enabled
 			? motionScroll(onScroll, {
 					...options,
-					container: getSingleElementFromSelector(node as HTMLElement, options?.container),
+					container: getSingleElementFromSelector(node, options?.container),
 					target: getSingleElementFromSelector(node, options?.target)
 				})
 			: EMPTY_FUNCTION;
@@ -115,7 +115,7 @@ const createScrollAnimation =
 					),
 					{
 						...options,
-						container: getSingleElementFromSelector(node as HTMLElement, options?.container),
+						container: getSingleElementFromSelector(node, options?.container),
 						target: getSingleElementFromSelector(node, options?.target)
 					}
 				)
