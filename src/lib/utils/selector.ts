@@ -1,26 +1,64 @@
 import type { ElementOrSelector } from 'motion';
+import { getUniqueId } from './id.js';
 
-const parseStringSelector = (selector: string): { isSelf: boolean; selector: string } => {
-	if (selector.trim() === '&') return { isSelf: true, selector: '' };
-	if (/^\s*&\s*>/.test(selector))
-		return { isSelf: true, selector: selector.replace(/^\s*&\s*>/, '').trim() };
-	return { isSelf: false, selector: selector.trim() };
+export type MultipleFunctionSelector = (node: Element) => ElementOrSelector;
+export type SingleFunctionSelector = (node: Element) => Element | undefined;
+
+function getElementsUsingNodeParent(node: Element, restSelector: string): NodeListOf<Element>;
+function getElementsUsingNodeParent(
+	node: Element,
+	restSelector: string,
+	single: true
+): Element | null;
+function getElementsUsingNodeParent(node: Element, restSelector: string, single = false) {
+	const id = getUniqueId();
+	node.setAttribute('data-svelte-use-motionone-id', `${id}`);
+	const element = node.parentElement ?? document;
+	const selector = `[data-svelte-use-motionone-id="${id}"]${restSelector}`;
+	const queryResult = single ? element.querySelector(selector) : element.querySelectorAll(selector);
+	node.removeAttribute('data-svelte-use-motionone-id');
+	return queryResult;
+}
+
+export const getMultipleElementsFromSelector = (
+	node: Element,
+	selector: ElementOrSelector | MultipleFunctionSelector
+): ElementOrSelector => {
+	if (typeof selector === 'function') return selector(node);
+	if (typeof selector !== 'string') return selector;
+	const trimmedSelector = selector.trim();
+	if (trimmedSelector === '&') return node;
+	switch (trimmedSelector.slice(0, 2)) {
+		case '& ':
+			return node.querySelectorAll(trimmedSelector.slice(2));
+		case '&>':
+		case '&+':
+		case '&~':
+			return getElementsUsingNodeParent(node, trimmedSelector.slice(1));
+		default:
+			return trimmedSelector;
+	}
 };
 
-export const getNodeElements = (node: Element, elements: ElementOrSelector): ElementOrSelector => {
-	if (typeof elements !== 'string') return elements;
-
-	const { isSelf, selector: query } = parseStringSelector(elements);
-	if (isSelf && query === '') return node;
-	if (isSelf) return node.querySelectorAll(query);
-	return query;
-};
-
-export const getNodeElement = <T extends Element>(node: T, element?: string | T): T | undefined => {
-	if (typeof element !== 'string') return element;
-
-	const { isSelf, selector: query } = parseStringSelector(element);
-	if (isSelf && query === '') return node;
-	if (isSelf) return node.querySelector<T>(query) || undefined;
-	return document.querySelector<T>(query) || undefined;
+export const getSingleElementFromSelector = <T extends Element>(
+	node: Element,
+	selector?: T | string | SingleFunctionSelector
+): T | undefined => {
+	if (selector === undefined) return undefined;
+	if (typeof selector === 'function') return selector(node) as T;
+	if (typeof selector !== 'string') return selector;
+	const trimmedSelector = selector.trim();
+	if (trimmedSelector === '&') return node as T;
+	switch (trimmedSelector.slice(0, 2)) {
+		case '& ':
+			return node.querySelector<T>(trimmedSelector.slice(2)) ?? undefined;
+		case '&>':
+		case '&+':
+		case '&~':
+			return (
+				(getElementsUsingNodeParent(node, trimmedSelector.slice(1), true) as T | null) ?? undefined
+			);
+		default:
+			return document.querySelector<T>(trimmedSelector) ?? undefined;
+	}
 };
