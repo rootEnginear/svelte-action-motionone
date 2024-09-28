@@ -15,6 +15,9 @@ import {
 	type SingleFunctionSelector
 } from '../utils/selector.js';
 
+/**
+ * Extend `options.container` and `options.target` to support string selector and selector function
+ */
 export type ExtendedScrollOptions = {
 	options?: Omit<ScrollOptions, 'container' | 'target'> & {
 		container?: ScrollOptions['container'] | string | SingleFunctionSelector;
@@ -38,6 +41,30 @@ const createScroll =
 				})
 			: EMPTY_FUNCTION;
 
+/**
+ * `use:scroll`
+ *
+ * **Gotcha!** `scroll` use **window scroll**.
+ *
+ * @see https://motion.dev/docs/scroll
+ * @example
+ * ```svelte
+ * <script lang="ts">
+ *   import type { ScrollActionOptions } from '@rootenginear/svelte-action-motionone';
+ *   import { scroll } from '@rootenginear/svelte-action-motionone';
+ *
+ *   let scrollPercent = 0;
+ *
+ *   const scrollProgress = {
+ *     onScroll: (info) => {
+ *       scrollPercent = Math.round(info.y.progress * 100);
+ *     }
+ *   } satisfies ScrollActionOptions;
+ * </script>
+ *
+ * <div use:scroll={scrollProgress}>You've scroll for {scrollPercent}%</div>
+ * ```
+ */
 export const scroll: Action<Element, ScrollActionOptions> = (
 	node,
 	options: ScrollActionOptions
@@ -59,6 +86,13 @@ export const scroll: Action<Element, ScrollActionOptions> = (
 export type ScrollAnimationActionOptions = ActionOptions &
 	ExtendedScrollOptions & {
 		animate: {
+			/**
+			 * Extend the support for self selector (`&`) and selector function
+			 *
+			 * The self selector must be in the following format: `&`, `&>{selector}`, `&+{selector}`, `&~{selector}`, `& {selector}`
+			 *
+			 * @default '&'
+			 */
 			elements?: ElementOrSelector | MultipleFunctionSelector;
 			keyframes: MotionKeyframesDefinition;
 			options?: AnimationOptions;
@@ -87,6 +121,28 @@ const createScrollAnimation =
 				)
 			: EMPTY_FUNCTION;
 
+/**
+ * `use:scrollAnimation`
+ *
+ * **Gotcha!** `scrollAnimation` use **window scroll**.
+ *
+ * @example
+ * ```svelte
+ * <script lang="ts">
+ *   import { scrollAnimation } from '@rootenginear/svelte-action-motionone';
+ *
+ *   const scrollProgressBar = {
+ *     animate: {
+ *       keyframes: {
+ *         width: ['0%', '100%']
+ *       }
+ *     }
+ *   };
+ * </script>
+ *
+ * <div class="fixed h-4 bg-blue-500 top-0 left-0 z-50" use:scrollAnimation={scrollProgressBar}></div>
+ * ```
+ */
 export const scrollAnimation: Action<Element, ScrollAnimationActionOptions> = (
 	node,
 	options: ScrollAnimationActionOptions
