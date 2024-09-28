@@ -15,6 +15,8 @@ import {
 	type SingleFunctionSelector
 } from '../utils/selector.js';
 
+const isDocument = (node: unknown): node is Document => node instanceof Document;
+
 /**
  * Extend `options.root` to support string selector and selector function
  */
@@ -38,7 +40,9 @@ const createInView =
 		enabled
 			? motionInView(node, onStart, {
 					...options,
-					root: getSingleElementFromSelector(node, options?.root)
+					root: isDocument(options?.root)
+						? options?.root
+						: getSingleElementFromSelector(node, options?.root)
 				})
 			: EMPTY_FUNCTION;
 
@@ -96,50 +100,50 @@ export const inView: Action<Element, InViewActionOptions> = (
 /**
  * Type for `use:inViewAnimation` options
  */
-export type InViewAnimationActionOptions = ActionOptions & {
-	animate: {
+export type InViewAnimationActionOptions = ActionOptions &
+	ExtendedInViewOptions & {
+		animate: {
+			/**
+			 * Extend the support for self selector (`&`) and selector function
+			 *
+			 * The self selector must be in the following format: `&`, `&>{selector}`, `&+{selector}`, `&~{selector}`, `& {selector}`
+			 *
+			 * @default '&'
+			 */
+			elements?: ElementOrSelector | MultipleFunctionSelector;
+			keyframes: MotionKeyframesDefinition;
+			options?: AnimationOptions;
+		};
 		/**
-		 * Extend the support for self selector (`&`) and selector function
+		 * Normally when the element is in the viewport and the animation is done, it's done. You can specify it to replay when it's in the viewport again using `repeat` option
+		 * @default undefined
+		 * @example
+		 * ```svelte
+		 * <script lang="ts">
+		 *   import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
 		 *
-		 * The self selector must be in the following format: `&`, `&>{selector}`, `&+{selector}`, `&~{selector}`, `& {selector}`
+		 *   const slideUp = {
+		 *     animate: {
+		 *       keyframes: {
+		 *         opacity: [0, 1],
+		 *         transform: ['translateY(10px)', 'translateY(0px)']
+		 *       },
+		 *       options: {
+		 *         duration: 0.5
+		 *       }
+		 *     },
+		 *     options: {
+		 *       amount: 1
+		 *     },
+		 *     repeat: true
+		 *   };
+		 * </script>
 		 *
-		 * @default '&'
+		 * <h1 class="opacity-0" use:inViewAnimation={slideUp}>Hello World!</h1>
+		 * ```
 		 */
-		elements?: ElementOrSelector | MultipleFunctionSelector;
-		keyframes: MotionKeyframesDefinition;
-		options?: AnimationOptions;
+		repeat?: boolean;
 	};
-	options?: InViewOptions;
-	/**
-	 * Normally when the element is in the viewport and the animation is done, it's done. You can specify it to replay when it's in the viewport again using `repeat` option
-	 * @default undefined
-	 * @example
-	 * ```svelte
-	 * <script lang="ts">
-	 *   import { inViewAnimation } from '@rootenginear/svelte-action-motionone';
-	 *
-	 *   const slideUp = {
-	 *     animate: {
-	 *       keyframes: {
-	 *         opacity: [0, 1],
-	 *         transform: ['translateY(10px)', 'translateY(0px)']
-	 *       },
-	 *       options: {
-	 *         duration: 0.5
-	 *       }
-	 *     },
-	 *     options: {
-	 *       amount: 1
-	 *     },
-	 *     repeat: true
-	 *   };
-	 * </script>
-	 *
-	 * <h1 class="opacity-0" use:inViewAnimation={slideUp}>Hello World!</h1>
-	 * ```
-	 */
-	repeat?: boolean;
-};
 
 const createInViewAnimation =
 	(node: Element) =>
@@ -160,7 +164,12 @@ const createInViewAnimation =
 						);
 						if (repeat) return () => {};
 					},
-					options
+					{
+						...options,
+						root: isDocument(options?.root)
+							? options?.root
+							: getSingleElementFromSelector(node, options?.root)
+					}
 				)
 			: EMPTY_FUNCTION;
 
