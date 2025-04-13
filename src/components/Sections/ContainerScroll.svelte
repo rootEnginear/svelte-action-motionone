@@ -1,0 +1,59 @@
+<script lang="ts">
+	import { containerScroll } from '$lib/index.js';
+	import { dragscroll } from '@svelte-put/dragscroll';
+	import { animate } from 'motion';
+	import Code from '../Code/Code.svelte';
+</script>
+
+<section>
+	<h2><code>use:containerScroll</code></h2>
+
+	<p>
+		Watch the scroll of that element.<br /><br />
+		<code>use:containerScroll</code> is a shortcut for:
+	</p>
+
+	<Code code={`<div use:scroll={(node) => [/* ... */, { container: node }]} />`}></Code>
+
+	<h3>Example</h3>
+
+	<div
+		use:containerScroll={(node) => [
+			animate(node.children[0], {
+				backgroundColor: ['#FF4136', '#FF851B', '#FFDC00', '#01FF70', '#7FDBFF', '#F012BE']
+			}),
+			{
+				axis: 'x'
+			}
+		]}
+		style="overflow-x:auto;user-select:none"
+		use:dragscroll
+	>
+		<div style="width:max-content;padding:16px">
+			<span style="font-weight:bold">Scroll Me! →</span> Lorem ipsum dolor sit amet consectetur, adipisicing
+			elit. Incidunt provident odit voluptatibus magni quae autem unde sed libero voluptatum, et quibusdam
+			tempore voluptas harum natus cum mollitia soluta perferendis ut.
+		</div>
+	</div>
+
+	<Code
+		code={`<div
+	use:containerScroll={(node) => [
+		animate(node.children[0], {
+			backgroundColor: ['#FF4136', '#FF851B', '#FFDC00', '#01FF70', '#7FDBFF', '#F012BE']
+		}),
+		{
+			axis: 'x'
+		}
+	]}
+	style="overflow-x:auto;user-select:none"
+	use:dragscroll
+>
+	<div style="width:max-content;padding:16px">
+		<span style="font-weight:bold">Scroll Me! →</span> Lorem ipsum dolor sit amet consectetur, adipisicing
+		elit. Incidunt provident odit voluptatibus magni quae autem unde sed libero voluptatum, et quibusdam
+		tempore voluptas harum natus cum mollitia soluta perferendis ut.
+	</div>
+</div>`}
+	/>
+</section>
