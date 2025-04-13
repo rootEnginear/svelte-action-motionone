@@ -16,11 +16,12 @@ html {
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
 
-	font-family: 'Figtree', sans-serif;
+	font-family: 'Host Grotesk', sans-serif;
 	font-optical-sizing: auto;
 	line-height: 1.5;
 
-	color: #111;
+	color: #020617;
+	background: #f8fafc;
 }
 
 body {
@@ -32,7 +33,7 @@ header,
 section {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 8px;
 }
 
 main {
@@ -44,10 +45,9 @@ main {
 }
 
 section {
-	background: #f8fafc;
-	background: oklch(98.5% 0 0);
-	padding: 24px;
-	border-radius: 24px;
+	padding: 20px 20px;
+	border-radius: 8px;
+	border: #020617 4px solid;
 }
 
 h1,
@@ -58,9 +58,16 @@ h3 {
 	margin-bottom: 0;
 }
 
-h1 {
-	font-family: 'Audiowide', sans-serif;
-	font-weight: 400;
+h1 > span {
+	text-box: trim-both text;
+}
+
+h2 {
+	text-box: trim-end text;
+}
+
+h3 {
+	text-box: trim-both cap alphabetic;
 }
 
 p + p {
@@ -68,13 +75,13 @@ p + p {
 }
 
 blockquote {
-	border-left: 4px #111 solid;
-	padding-left: 8px;
+	border-left: 4px #020617 solid;
+	padding-left: 12px;
+	margin-bottom: 8px;
 }
 
-code,
-pre {
-	font-family: 'Roboto Mono', monospace;
+code {
+	font-family: 'Space Mono', monospace;
 	tab-size: 2;
 }
 
@@ -85,10 +92,34 @@ ol {
 	margin-left: 2ch;
 }
 
+a {
+	color: #0074d9;
+	text-decoration-style: dashed;
+}
+
+a:hover {
+	text-decoration-style: solid;
+}
+
 .shiki,
 .shiki-magic-move-container {
 	padding: 8px 12px;
 	border-radius: 8px;
 	overflow-x: auto;
 	font-size: 14px;
+}
+
+.code {
+	background: #020617;
+	color: #f8fafc;
+	padding: 0.0625em 0.3125em;
+	border-radius: 8px;
+}
+
+.mt-8 {
+	margin-top: 8px;
+}
+
+.mb-8 {
+	margin-bottom: 8px;
 }

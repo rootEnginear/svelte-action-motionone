@@ -5,29 +5,13 @@
 </script>
 
 <section>
-	<h2><code>use:inView</code></h2>
+	<h2 class="mb-8"><code class="code">use:inView</code></h2>
 
 	<blockquote>
 		<a href="https://motion.dev/docs/inview" target="_blank" rel="nofollow noopener noreferrer"
 			>https://motion.dev/docs/inview</a
 		>
 	</blockquote>
-
-	<Code
-		code={`<div use:inView={[() => console.log('InView!')]}>InView Basic</div>
-<div use:inView={(node) => [() => console.log(node)]}>InView Node</div>
-<div
-	use:inView={[
-		(el) => {
-			animate(el, { opacity: [0, 1] });
-		}
-	]}
->
-	InView Animation
-</div>`}
-	/>
-
-	<h3>Example</h3>
 
 	<div
 		use:inView={[
@@ -44,7 +28,7 @@
 			},
 			{ amount: 1 }
 		]}
-		style="background:#FFDC00;color:#85144b;padding:16px;border-radius:16px;text-align:center;font-size:32px;font-weight:bold"
+		style="background:#FFDC00;padding:16px;border-radius:16px;text-align:center;font-size:32px;font-weight:bold"
 	>
 		Hello!
 	</div>
@@ -65,7 +49,7 @@
 		},
 		{ amount: 1 }
 	]}
-	style="background:#FFDC00;color:#85144b;padding:16px;border-radius:16px;text-align:center;font-size:32px;font-weight:bold"
+	style="background:#FFDC00;padding:16px;border-radius:16px;text-align:center;font-size:32px;font-weight:bold"
 >
 	Hello!
 </div>`}

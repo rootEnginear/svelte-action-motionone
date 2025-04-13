@@ -5,7 +5,7 @@
 </script>
 
 <section>
-	<h2><code>use:scroll</code></h2>
+	<h2 class="mb-8"><code class="code">use:scroll</code></h2>
 
 	<blockquote>
 		<a href="https://motion.dev/docs/scroll" target="_blank" rel="nofollow noopener noreferrer"

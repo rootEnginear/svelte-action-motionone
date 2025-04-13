@@ -6,21 +6,20 @@
 </script>
 
 <section>
-	<h2><code>use:containerScroll</code></h2>
+	<h2 class="mb-8"><code class="code">use:containerScroll</code></h2>
 
 	<p>
-		Watch the scroll of that element.<br /><br />
-		<code>use:containerScroll</code> is a shortcut for:
+		Watch the scroll of that element. <code class="code">use:containerScroll</code> is a shortcut for:
 	</p>
 
 	<Code code={`<div use:scroll={(node) => [/* ... */, { container: node }]} />`}></Code>
 
-	<h3>Example</h3>
+	<h3 class="mt-8">Example</h3>
 
 	<div
 		use:containerScroll={(node) => [
 			animate(node.children[0], {
-				backgroundColor: ['#FF4136', '#FF851B', '#FFDC00', '#01FF70', '#7FDBFF', '#F012BE']
+				backgroundColor: ['#FF4136', '#FFDC00']
 			}),
 			{
 				axis: 'x'
@@ -40,7 +39,7 @@
 		code={`<div
 	use:containerScroll={(node) => [
 		animate(node.children[0], {
-			backgroundColor: ['#FF4136', '#FF851B', '#FFDC00', '#01FF70', '#7FDBFF', '#F012BE']
+			backgroundColor: ['#FF4136', '#FFDC00']
 		}),
 		{
 			axis: 'x'
