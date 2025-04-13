@@ -1,6 +1,6 @@
 {
 	"name": "@rootenginear/svelte-action-motionone",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "Unofficial Svelte Action for Motion One animation library",
 	"scripts": {
 		"dev": "vite dev",
@@ -28,8 +28,10 @@
 		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
+		"@shikijs/langs-precompiled": "^3.2.2",
+		"@shikijs/themes": "^3.2.2",
 		"@svelte-put/dragscroll": "3.0.1",
-		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
