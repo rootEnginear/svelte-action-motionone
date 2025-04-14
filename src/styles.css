@@ -22,6 +22,8 @@ html {
 
 	color: #020617;
 	background: #f8fafc;
+
+	scroll-padding-top: 70px;
 }
 
 body {
@@ -45,7 +47,7 @@ main {
 }
 
 section {
-	padding: 20px 20px;
+	padding: 20px;
 	border-radius: 8px;
 	border: #020617 4px solid;
 }

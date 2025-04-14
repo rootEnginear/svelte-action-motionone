@@ -14,7 +14,7 @@
 
 	<Code code={`<div use:scroll={(node) => [/* ... */, { container: node }]} />`}></Code>
 
-	<h3 class="mt-8">Example</h3>
+	<h3 class="mt-8 mb-8">Example</h3>
 
 	<div
 		use:containerScroll={(node) => [
