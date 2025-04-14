@@ -1,0 +1,125 @@
+*,
+::before,
+::after {
+	position: relative;
+}
+
+html {
+	overflow-x: hidden;
+	overflow-x: clip;
+	scroll-behavior: smooth;
+	text-wrap: pretty;
+	font-variant-numeric: tabular-nums;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-moz-text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	text-size-adjust: none;
+
+	font-family: 'Host Grotesk', sans-serif;
+	font-optical-sizing: auto;
+	line-height: 1.5;
+
+	color: #020617;
+	background: #f8fafc;
+}
+
+body {
+	min-height: 100svh;
+}
+
+main,
+header,
+section {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+main {
+	max-width: 80ch;
+	margin: 0 auto;
+	padding: 50px 20px;
+
+	gap: 32px;
+}
+
+section {
+	padding: 20px 20px;
+	border-radius: 8px;
+	border: #020617 4px solid;
+}
+
+h1,
+h2,
+h3 {
+	text-wrap: balance;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+h1 > span {
+	text-box: trim-both text;
+}
+
+h2 {
+	text-box: trim-end text;
+}
+
+h3 {
+	text-box: trim-both cap alphabetic;
+}
+
+p + p {
+	margin: 0;
+}
+
+blockquote {
+	border-left: 4px #020617 solid;
+	padding-left: 12px;
+	margin-bottom: 8px;
+}
+
+code {
+	font-family: 'Space Mono', monospace;
+	tab-size: 2;
+}
+
+ul,
+ol {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 2ch;
+}
+
+a {
+	color: #0074d9;
+	text-decoration-style: dashed;
+}
+
+a:hover {
+	text-decoration-style: solid;
+}
+
+.shiki,
+.shiki-magic-move-container {
+	padding: 8px 12px;
+	border-radius: 8px;
+	overflow-x: auto;
+	font-size: 14px;
+}
+
+.code {
+	background: #020617;
+	color: #f8fafc;
+	padding: 0.0625em 0.3125em;
+	border-radius: 8px;
+}
+
+.mt-8 {
+	margin-top: 8px;
+}
+
+.mb-8 {
+	margin-bottom: 8px;
+}
