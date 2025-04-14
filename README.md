@@ -14,4 +14,4 @@ deno add jsr:@rootenginear/svelte-action-motionone
 
 ## Documentation
 
-[Read the full documentation](https://github.com/rootEnginear/svelte-action-motionone/tree/main/docs)
+[Read the full documentation](https://rootenginear.github.io/svelte-action-motionone/)

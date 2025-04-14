@@ -9,7 +9,14 @@
 		<li><a href="#use-scroll-in-view">use:scrollInView</a></li>
 		<li><a href="#use-hover">use:hover</a></li>
 		<li><a href="#use-press">use:press</a></li>
-		<li><a href="#more-examples">More Examples</a></li>
+		<li>
+			<a href="#more-examples">More Examples</a>
+			<ol style="list-style:circle">
+				<li><a href="#staggered-animation">Staggered Animation</a></li>
+				<li><a href="#timeline-sequences">Timeline Sequences</a></li>
+				<li><a href="#enable-disable-animation">Enable/Disable Animation</a></li>
+			</ol>
+		</li>
 		<li><a href="#best-practices">Best Practices</a></li>
 	</ol>
 </section>
