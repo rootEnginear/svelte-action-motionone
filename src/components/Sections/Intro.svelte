@@ -2,7 +2,7 @@
 	import Code from '../Code/Code.svelte';
 </script>
 
-<section>
+<section id="the-idea">
 	<h2>The Idea</h2>
 
 	<p class="mb-8">

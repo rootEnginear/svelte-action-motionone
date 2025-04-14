@@ -4,7 +4,7 @@
 	import Code from '../Code/Code.svelte';
 </script>
 
-<section>
+<section id="use-scroll">
 	<h2 class="mb-8"><code class="code">use:scroll</code></h2>
 
 	<blockquote>

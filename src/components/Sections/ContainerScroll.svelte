@@ -5,7 +5,7 @@
 	import Code from '../Code/Code.svelte';
 </script>
 
-<section>
+<section id="use-container-scroll">
 	<h2 class="mb-8"><code class="code">use:containerScroll</code></h2>
 
 	<p>
@@ -46,7 +46,6 @@
 		}
 	]}
 	style="overflow-x:auto;user-select:none"
-	use:dragscroll
 >
 	<div style="width:max-content;padding:16px">
 		<span style="font-weight:bold">Scroll Me! →</span> Lorem ipsum dolor sit amet consectetur, adipisicing

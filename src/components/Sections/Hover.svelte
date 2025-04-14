@@ -4,7 +4,7 @@
 	import Code from '../Code/Code.svelte';
 </script>
 
-<section>
+<section id="use-hover">
 	<h2 class="mb-8"><code class="code">use:hover</code></h2>
 
 	<blockquote>

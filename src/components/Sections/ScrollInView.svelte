@@ -4,7 +4,7 @@
 	import Code from '../Code/Code.svelte';
 </script>
 
-<section>
+<section id="use-scroll-in-view">
 	<h2 class="mb-8"><code class="code">use:scrollInView</code></h2>
 
 	<p>

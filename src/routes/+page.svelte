@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BestPractices from '../components/Sections/BestPractices.svelte';
 	import ContainerScroll from '../components/Sections/ContainerScroll.svelte';
 	import Examples from '../components/Sections/Examples.svelte';
 	import Header from '../components/Sections/Header.svelte';
@@ -8,10 +9,12 @@
 	import Press from '../components/Sections/Press.svelte';
 	import Scroll from '../components/Sections/Scroll.svelte';
 	import ScrollInView from '../components/Sections/ScrollInView.svelte';
+	import TableOfContents from '../components/Sections/TableOfContents.svelte';
 	import '../styles.css';
 </script>
 
 <Header />
+<TableOfContents />
 <Intro />
 <InView />
 <Scroll />
@@ -20,3 +23,4 @@
 <Hover />
 <Press />
 <Examples />
+<BestPractices />
