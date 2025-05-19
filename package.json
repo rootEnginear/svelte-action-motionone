@@ -28,7 +28,7 @@
 		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
-		"@shikijs/langs-precompiled": "^3.2.2",
+		"@shikijs/langs": "^3.2.2",
 		"@shikijs/themes": "^3.2.2",
 		"@svelte-put/dragscroll": "3.0.1",
 		"@sveltejs/adapter-static": "^3.0.8",
