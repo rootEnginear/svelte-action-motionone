@@ -40,5 +40,5 @@ scroll(onScroll, options)`}
 <div use:scroll={(node) => [onScroll, options]} />`}
 	/>
 
-	<p class="mt-8"><strong>Compatibility:</strong> Svelte 4, Motion 12</p>
+	<p class="mt-8"><strong>Compatibility:</strong> Svelte 4/5, Motion 12</p>
 </section>

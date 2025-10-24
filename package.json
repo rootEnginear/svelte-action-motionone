@@ -1,6 +1,6 @@
 {
 	"name": "@rootenginear/svelte-action-motionone",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "Unofficial Svelte Action for Motion One animation library",
 	"scripts": {
 		"dev": "vite dev",
@@ -25,7 +25,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^4 || ^5"
 	},
 	"devDependencies": {
 		"@shikijs/langs": "^3.2.2",
